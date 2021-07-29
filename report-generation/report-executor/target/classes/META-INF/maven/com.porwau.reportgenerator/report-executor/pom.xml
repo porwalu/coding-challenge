@@ -29,19 +29,44 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
+			<!-- <scope>runtime</scope> -->
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<!-- scope>test</scope> -->
 		</dependency>
-
+		
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-core</artifactId>
+		    <scope>compile</scope>
+		  </dependency>
 		<dependency>
 			<groupId>com.porwau.reportgenerator</groupId>
 			<artifactId>report-executor-commons</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<!-- scope>compile</scope-->
 		</dependency>
 	</dependencies>
+	
+		
+		<build>
+  <plugins>
+    <plugin>
+      <!-- Build an executable JAR -->
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-jar-plugin</artifactId>
+      <version>3.1.0</version>
+      <configuration>
+        <archive>
+          <manifest>
+            <mainClass>com.porwau.reportgenerator.reportexecutor.ReportGenerator</mainClass>
+          </manifest>
+        </archive>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
 </project>
