@@ -20,6 +20,44 @@ Components are across network
 
 ![image](https://user-images.githubusercontent.com/75112899/127434430-bfcaf200-cc36-493e-979f-f0812d996a32.png)
 
+
+**Pre-requisite**
+
+Java 8
+Usage
+How to run the application
+Clone the repository using below command
+git clone https://github.com/porwalu/coding-challenge
+
+The 'report-generation' directory inside 'coding-challenge' forms the root of the repository, so please navigate to it first.
+cd coding-challenge/report-generation
+
+Then on a Unix like Platform(or via unix emulator like cygwin/MobaXterm etc on windows), navigate to the 'bin' directory, which is directly under the root
+cd bin
+
+And then execute the shell script
+/bin/bash launchApp.sh
+
+The script will launch the microservices in background using the jars and then launch the Report Generation application.
+
+Alternatively, the program can be run directly by executing the JAR from individual 'target' directory,.
+
+There are three jar files which can be executed as below from this directory - coding-challenge/report-generation
+
+java -jar key-service/target/key-service-1.0-SNAPSHOT.jar
+java -jar transaction-service/target/transaction-service-1.0-SNAPSHOT.jar
+java -jar report-executor/target/report-executor-1.0-SNAPSHOT.jar
+
+The csv reports will be generated inside bin directory.
+
+How to build the jar again
+
+After cloning the repository, from root(report-generation directory) go to individual projects directory in the same order (report-executor-commons, key-service,transaction-service,report-executor) and run the below command:
+mvn clean install
+
+This generates the newly created jar. Run them using the script or individuall as mentioned above.
+
+
 **Assumptions**
 
 Databases are read only from reporting app perspective.
@@ -67,6 +105,9 @@ Ideally, we should save network calls by caching the key data as well as the Tra
 **TODO/Future**
 
 Project can be extended to use JpaRepository and actual db in Springboot.
+
 Cache implementation can be improved further to evict data and create query range for new data and evicted data.
+
 Creating a config file to control configurable properties
+
 SSL implementation for Rest API access. 
