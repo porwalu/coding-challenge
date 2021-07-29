@@ -68,7 +68,7 @@ public class ReportGenerator {
      // Using a single thread here, as we have only a single series of tasks to be executed.
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();   
         try {
-            scheduledExecutorService.scheduleAtFixedRate( task , 0 , 15 , TimeUnit.SECONDS );
+            scheduledExecutorService.scheduleAtFixedRate( task , 0 , 1 , TimeUnit.MINUTES );
             try {
                 Thread.sleep( TimeUnit.MINUTES.toMillis( 2 ) );  // Sleep this main thread to let our scheduled task complete few iterations.
             } catch ( InterruptedException e ) {
