@@ -3,7 +3,6 @@ key-service/.gitignore
 key-service/.mvn/
 key-service/mvnw
 key-service/mvnw.cmd
-key-service/src/main/resources/
 report-executor-commons/.classpath
 report-executor-commons/.project
 report-executor-commons/.settings/
@@ -28,5 +27,4 @@ transaction-service/.gitignore
 transaction-service/.mvn/
 transaction-service/mvnw
 transaction-service/mvnw.cmd
-transaction-service/src/main/resources/
 
