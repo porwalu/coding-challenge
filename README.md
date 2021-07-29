@@ -100,11 +100,11 @@ encryption – data is encrypted using the symmetric key specific to a bank id b
 
 Created Two microservices exposing Http GET endpoints for data access from DB1 and DB2.
 
-![image](https://user-images.githubusercontent.com/75112899/127434755-45d0c5d8-735d-4907-a59a-d104b78a2acb.png)
+![image](https://user-images.githubusercontent.com/75112899/127568940-883c0b88-3714-42ff-a4be-755df2dcbe1a.png)
 
 **Report Application**
 
-This is a SpringBoot application which uses ExecutorFramework to get a newSingleThreadScheduledExecutor.
+This is a Standalone application which uses ExecutorFramework to get a newSingleThreadScheduledExecutor.
 
 This application runs periodically (can be adjusted) to query data using the rest api for DB1, it then for the transaction data, fetches the key from DB2 and decrypts the data matching on BankId.
 
@@ -114,6 +114,9 @@ The data reconciliation and creation of csv happens for each run of the schedule
 
 Ideally, we should save network calls by caching the key data as well as the Transaction data on the Report Application. The api call to get data from db should be appropriately made considering the data we already have so as to get the delta. This will improve performance.
 
+**High Level Design - Future Growth**
+
+![image](https://user-images.githubusercontent.com/75112899/127569044-5290d7b7-2b24-4a41-918e-a1f2ae6bb826.png)
 
 **TODO/Future**
 
