@@ -24,18 +24,28 @@ Components are across network
 **Pre-requisite**
 
 Java 8
-Usage
+
+**Usage**
+
 How to run the application
+
 Clone the repository using below command
+
 git clone https://github.com/porwalu/coding-challenge
 
+
 The 'report-generation' directory inside 'coding-challenge' forms the root of the repository, so please navigate to it first.
+
 cd coding-challenge/report-generation
 
+
 Then on a Unix like Platform(or via unix emulator like cygwin/MobaXterm etc on windows), navigate to the 'bin' directory, which is directly under the root
+
 cd bin
 
+
 And then execute the shell script
+
 /bin/bash launchApp.sh
 
 The script will launch the microservices in background using the jars and then launch the Report Generation application.
@@ -45,7 +55,9 @@ Alternatively, the program can be run directly by executing the JAR from individ
 There are three jar files which can be executed as below from this directory - coding-challenge/report-generation
 
 java -jar key-service/target/key-service-1.0-SNAPSHOT.jar
+
 java -jar transaction-service/target/transaction-service-1.0-SNAPSHOT.jar
+
 java -jar report-executor/target/report-executor-1.0-SNAPSHOT.jar
 
 The csv reports will be generated inside bin directory.
@@ -53,6 +65,7 @@ The csv reports will be generated inside bin directory.
 How to build the jar again
 
 After cloning the repository, from root(report-generation directory) go to individual projects directory in the same order (report-executor-commons, key-service,transaction-service,report-executor) and run the below command:
+
 mvn clean install
 
 This generates the newly created jar. Run them using the script or individuall as mentioned above.
@@ -81,7 +94,7 @@ DB2 – Created 10 records programmatically with BankId and symmetric key using 
 DB1 – Ensured that the transactions for BankIds are  encrypted with same keys as in DB2 
 
 While inserting data into DB1, I am using 
-Encryption – data is encrypted using the symmetric key specific to a bank id before being stored in DB(in memory DS) 
+encryption – data is encrypted using the symmetric key specific to a bank id before being stored in DB(in memory DS) 
 
 **Microservices**
 
