@@ -26,6 +26,8 @@ import com.porwau.reportgenerator.reportexecutor.remote.TransactionsFetcher;
 public class ReportGenerator {
 
 	private static Logger logger = LoggerFactory.getLogger("ReportGenerator.class");
+	private  KeysForDecryptionFetcher keysForDecryptionFetcher = new KeysForDecryptionFetcher();
+
     public static void main ( String[] args ) {
         ReportGenerator reportGen = new ReportGenerator();
         reportGen.launchScheduler();
@@ -44,7 +46,7 @@ public class ReportGenerator {
                 ) {
                     List<Transaction> transactions = TransactionsFetcher.getAllTransactions();
                     transactions.forEach(transaction -> {
-            			String symmKey = KeysForDecryptionFetcher.getDecryptionKey(transaction.getBankId());
+            			String symmKey = keysForDecryptionFetcher.getDecryptionKey(transaction.getBankId());
             			try {
                             csvPrinter.printRecord( transaction.getTransactionId(), transaction.getBankId() , EncryptDecrypt.decrypt(transaction.getEncryptedData(),
             						EncryptDecrypt.createSecretKey(symmKey.toCharArray())), transaction.getUnixtime());

@@ -13,7 +13,6 @@ Report App should generate hourly csv report transaction data.
 
 Performance improvements.
 High Availability.
-Future functionality extension.
 
 DB1 – has encrypted transaction Data. Read Only
 DB2 – has symmetric key for decryption. Read Only

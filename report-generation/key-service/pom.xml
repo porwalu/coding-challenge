@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.porwau.reportgenerator</groupId>
 	<artifactId>key-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
 	<name>key-service</name>
 	<description>Key  service</description>
 	<properties>

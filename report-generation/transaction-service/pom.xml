@@ -12,7 +12,7 @@
 	</parent>
 	<groupId>com.porwau.reportgenerator</groupId>
 	<artifactId>transaction-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
 	<name>transaction-service</name>
 	<description>transactionservice</description>
 	<properties>
@@ -39,7 +39,7 @@
 		<dependency>
 			<groupId>com.porwau.reportgenerator</groupId>
 			<artifactId>report-executor-commons</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0-SNAPSHOT</version>
 			<scope>compile</scope>
     		<!-- systemPath>C:\porwau\CR\Career\Preparation\Java\coding-challenge\report-generation\report-executor-commons\target\report-executor-commons-0.0.1-SNAPSHOT.jar</systemPath-->
 		</dependency>
