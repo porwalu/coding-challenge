@@ -15,7 +15,7 @@ import com.porwau.reportgenerator.common.model.Transaction;
  */
 public class TransactionsFetcher {
 	private static final String TRANSACTIONS_URL = "http://localhost:8111/transactions";
-    public static List<Transaction> getAllTransactions() {
+    public List<Transaction> getAllTransactions() {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<List<Transaction>> responseEntity = restTemplate.exchange(TRANSACTIONS_URL,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Transaction>>() {

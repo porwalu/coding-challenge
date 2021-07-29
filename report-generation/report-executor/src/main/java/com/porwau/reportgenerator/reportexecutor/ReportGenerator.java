@@ -23,16 +23,27 @@ import com.porwau.reportgenerator.common.utilities.EncryptDecrypt;
 import com.porwau.reportgenerator.reportexecutor.remote.KeysForDecryptionFetcher;
 import com.porwau.reportgenerator.reportexecutor.remote.TransactionsFetcher;
 
+/**
+ * @author Utkarsh Porwal<br>
+ *This is the main Report application which does the follow : <br>
+ *1)Gets the transaction from DB1 (the data comes as encrypted)<br>
+ *2)Parses the data to get the bank id and get the key corresponding to this bank id from DB2<br>
+ *3)It decrypts the transaction data and creates it in a csv file.<br>
+ *4)There is a schedule which runs to generated reports multiple times. I have made it 1 minute as of now for the purpose of testing.
+ */
 public class ReportGenerator {
 
 	private static Logger logger = LoggerFactory.getLogger("ReportGenerator.class");
 	private  KeysForDecryptionFetcher keysForDecryptionFetcher = new KeysForDecryptionFetcher();
-
+	private TransactionsFetcher transactionFetcher = new TransactionsFetcher();
     public static void main ( String[] args ) {
         ReportGenerator reportGen = new ReportGenerator();
         reportGen.launchScheduler();
         
     }
+    /**
+     * 
+     */
     private void launchScheduler() {
         logger.info("Report Generation scheduler launched at " + ZonedDateTime.now());
         Runnable task = new Runnable() {
@@ -44,7 +55,7 @@ public class ReportGenerator {
                 BufferedWriter writer = new BufferedWriter( new FileWriter( fileNamePath ) ) ;
                 CSVPrinter csvPrinter = new CSVPrinter( writer , CSVFormat.DEFAULT.withHeader( "TransactionID" , "BankID" , "Transaction" , "Timestamp" ) ) ;
                 ) {
-                    List<Transaction> transactions = TransactionsFetcher.getAllTransactions();
+                    List<Transaction> transactions = transactionFetcher.getAllTransactions();
                     transactions.forEach(transaction -> {
             			String symmKey = keysForDecryptionFetcher.getDecryptionKey(transaction.getBankId());
             			try {
@@ -64,7 +75,7 @@ public class ReportGenerator {
             }
         };
 
-        // Schedule this task every 1 minute for running. This ends after 2 minutes. Adjust as desired.
+      // Schedule this task every 1 minute for running. This ends after 2 minutes. Adjust as desired.
      // Using a single thread here, as we have only a single series of tasks to be executed.
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();   
         try {
