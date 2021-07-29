@@ -1,5 +1,12 @@
 package com.porwau.reportgenerator.common.model;
 
+/**
+ * @author Utkarsh Porwal<br>
+ *         Defines the structure of KeyMap DS.<br>
+ *         Integer bankId<br>
+ *         String symmetricKey
+ *
+ */
 public class KeyMap {
 
 	private Integer bankId;

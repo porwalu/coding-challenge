@@ -1,14 +1,22 @@
 package com.porwau.reportgenerator.common.model;
 
+/**
+ * @author Utkarsh Porwal<br>
+ *         Defines the structure of a Transaction as below: <br>Long transactionId
+ *         <br>Integer bankId<br>String encryptedData<br>Long
+ *         unixtime
+ */
 public class Transaction {
 
 	private Long transactionId;
 	private Integer bankId;
 	private String encryptedData;
 	private Long unixtime;
+
 	public Transaction() {
-		
+
 	}
+
 	public Transaction(Long transactionId, Integer bankId, String encryptedData, Long unixtime) {
 		super();
 		this.transactionId = transactionId;
@@ -48,7 +56,5 @@ public class Transaction {
 	public void setUnixtime(Long unixtime) {
 		this.unixtime = unixtime;
 	}
-	
-	
 
 }

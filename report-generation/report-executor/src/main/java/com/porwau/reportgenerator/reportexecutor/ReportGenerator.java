@@ -2,8 +2,6 @@ package com.porwau.reportgenerator.reportexecutor;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -19,69 +17,56 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
 
 import com.porwau.reportgenerator.common.model.Transaction;
 import com.porwau.reportgenerator.common.utilities.EncryptDecrypt;
+import com.porwau.reportgenerator.reportexecutor.remote.KeysForDecryptionFetcher;
+import com.porwau.reportgenerator.reportexecutor.remote.TransactionsFetcher;
 
 public class ReportGenerator {
-	Logger logger = LoggerFactory.getLogger("ReportGenerator.class");
+
+	private static Logger logger = LoggerFactory.getLogger("ReportGenerator.class");
     public static void main ( String[] args ) {
-
-		List<Transaction> transactions = getTransactions();
-
         ReportGenerator reportGen = new ReportGenerator();
-        reportGen.generateReport(transactions);
+        reportGen.launchScheduler();
         
     }
-	private static List<Transaction> getTransactions() {
-		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<List<Transaction>> responseEntity = restTemplate.exchange("http://localhost:8111/transactions",
-				HttpMethod.GET, null, new ParameterizedTypeReference<List<Transaction>>() {
-				});
-		List<Transaction> transactions = responseEntity.getBody();
-		return transactions;
-	}
-    private void generateReport (List<Transaction> transactions) {
-        logger.info("Report Generation started at " + ZonedDateTime.now());
+    private void launchScheduler() {
+        logger.info("Report Generation scheduler launched at " + ZonedDateTime.now());
         Runnable task = new Runnable() {
             @Override
             public void run () {
-                Instant start = Instant.now();
                 String dateTimeLabel = OffsetDateTime.now(ZoneId.systemDefault()).truncatedTo( ChronoUnit.MINUTES ).format( DateTimeFormatter.ofPattern( "uuuuMMdd'T'HHmmX" , Locale.US ) );
                 String fileNamePath = "BankingReport_" + dateTimeLabel + ".csv";
-                try ( 
+                try (
                 BufferedWriter writer = new BufferedWriter( new FileWriter( fileNamePath ) ) ;
                 CSVPrinter csvPrinter = new CSVPrinter( writer , CSVFormat.DEFAULT.withHeader( "TransactionID" , "BankID" , "Transaction" , "Timestamp" ) ) ;
                 ) {
-            		transactions.forEach(transaction -> {
-            			String url = "http://localhost:8112/keys/" + transaction.getBankId();
-            			String symmKey = new RestTemplate().getForObject(url, String.class);
+                    List<Transaction> transactions = TransactionsFetcher.getAllTransactions();
+                    transactions.forEach(transaction -> {
+            			String symmKey = KeysForDecryptionFetcher.getDecryptionKey(transaction.getBankId());
             			try {
                             csvPrinter.printRecord( transaction.getTransactionId(), transaction.getBankId() , EncryptDecrypt.decrypt(transaction.getEncryptedData(),
             						EncryptDecrypt.createSecretKey(symmKey.toCharArray())), transaction.getUnixtime());
 
             			} catch (Exception e) {
-            				e.printStackTrace();
+            				logger.error("Error printing the csv",e);
             			}
             		});
 
                     csvPrinter.flush();
-                } catch ( IOException e ) {
-                    e.printStackTrace();
+                } catch ( Exception e ) {
+                    logger.error("Error running the scheduler",e);
                 }
                 logger.info( "Report generation ending its run at " + ZonedDateTime.now());
             }
         };
 
         // Schedule this task every 1 minute for running. This ends after 2 minutes. Adjust as desired.
-     // Using a single thread here, as we have only a single series of tasks to be executed, no multi-tasking.
+     // Using a single thread here, as we have only a single series of tasks to be executed.
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();   
         try {
-            scheduledExecutorService.scheduleAtFixedRate( task , 0 , 1 , TimeUnit.MINUTES );  
+            scheduledExecutorService.scheduleAtFixedRate( task , 0 , 15 , TimeUnit.SECONDS );
             try {
                 Thread.sleep( TimeUnit.MINUTES.toMillis( 2 ) );  // Sleep this main thread to let our scheduled task complete few iterations.
             } catch ( InterruptedException e ) {

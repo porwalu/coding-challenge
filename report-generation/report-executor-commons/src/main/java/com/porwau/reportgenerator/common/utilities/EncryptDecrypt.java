@@ -15,18 +15,35 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+/**
+ * @author Utkarsh Porwal<br>
+ *Contains utilities for Encrypting and decrypting data using a symmetric key.
+ */
 public class EncryptDecrypt {
     private static final byte[] SALT = new String("12345678").getBytes();
     private static final int ITERATION_COUNT = 40000;
     private static final int KEY_LENGTH = 128;
     
-	  public static SecretKeySpec createSecretKey(char[] password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	  /**
+	 * @param Symmetric key
+	 * @return SecretKeySpec
+	 * @throws NoSuchAlgorithmException
+	 * @throws InvalidKeySpecException
+	 */
+	public static SecretKeySpec createSecretKey(char[] password) throws NoSuchAlgorithmException, InvalidKeySpecException {
 	        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
 	        PBEKeySpec keySpec = new PBEKeySpec(password, SALT, ITERATION_COUNT, KEY_LENGTH);
 	        SecretKey keyTmp = keyFactory.generateSecret(keySpec);
 	        return new SecretKeySpec(keyTmp.getEncoded(), "AES");
 	    }
 
+	    /**
+	     * @param dataToEncrypt
+	     * @param key
+	     * @return Encrypted string
+	     * @throws GeneralSecurityException
+	     * @throws UnsupportedEncodingException
+	     */
 	    public static String encrypt(String dataToEncrypt, SecretKeySpec key) throws GeneralSecurityException, UnsupportedEncodingException {
 	        Cipher pbeCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 	        pbeCipher.init(Cipher.ENCRYPT_MODE, key);
@@ -41,9 +58,16 @@ public class EncryptDecrypt {
 	        return Base64.getEncoder().encodeToString(bytes);
 	    }
 
-	    public static String decrypt(String string, SecretKeySpec key) throws GeneralSecurityException, IOException {
-	        String iv = string.split(":")[0];
-	        String property = string.split(":")[1];
+	    /**
+	     * @param dataToDecrypt
+	     * @param key same as used for encryption
+	     * @return decrypted string
+	     * @throws GeneralSecurityException
+	     * @throws IOException
+	     */
+	    public static String decrypt(String dataToDecrypt, SecretKeySpec key) throws GeneralSecurityException, IOException {
+	        String iv = dataToDecrypt.split(":")[0];
+	        String property = dataToDecrypt.split(":")[1];
 	        Cipher pbeCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 	        pbeCipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(base64Decode(iv)));
 	        return new String(pbeCipher.doFinal(base64Decode(property)), "UTF-8");
