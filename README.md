@@ -27,7 +27,7 @@ Java 8
 
 **Usage**
 
-How to run the application
+How to run the application:
 
 Clone the repository using below command
 
@@ -39,12 +39,11 @@ The 'report-generation' directory inside 'coding-challenge' forms the root of th
 cd coding-challenge/report-generation
 
 
-Then on a Unix like Platform(or via unix emulator like cygwin/MobaXterm etc on windows), navigate to the 'bin' directory, which is directly under the root
+Then on a Unix like Platform(or via unix emulator like cygwin/MobaXterm etc on windows), navigate to the 'bin' directory, which is directly under the root.
 
 cd bin
 
-
-And then execute the shell script
+Then execute the shell script :
 
 /bin/bash launchApp.sh
 
@@ -70,6 +69,8 @@ mvn clean install
 
 This generates the newly created jar. Run them using the script or individuall as mentioned above.
 
+**Note:**
+Since the microservices are run as a daemon, you might have to find the java process and kill it after you have finished testing.
 
 **Assumptions**
 
@@ -116,7 +117,7 @@ Ideally, we should save network calls by caching the key data as well as the Tra
 
 **High Level Design - Future Growth**
 
-![image](https://user-images.githubusercontent.com/75112899/127569044-5290d7b7-2b24-4a41-918e-a1f2ae6bb826.png)
+![image](https://user-images.githubusercontent.com/75112899/127569584-71a7d2d3-d577-4df4-a2fc-3c11e7a2e3a1.png)
 
 **TODO/Future**
 
