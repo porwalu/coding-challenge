@@ -27,7 +27,9 @@ Java 8
 
 **Usage**
 
-How to run the application:
+**How to run the application:**
+
+I have provided multiple provisions of running the application. Please follow the below steps.
 
 Clone the repository using below command
 
@@ -39,7 +41,9 @@ The 'report-generation' directory inside 'coding-challenge' forms the root of th
 cd coding-challenge/report-generation
 
 
-Then on a Unix like Platform(or via unix emulator like cygwin/MobaXterm etc on windows), navigate to the 'bin' directory, which is directly under the root.
+**a) Using a shell script**
+
+On a Unix like Platform(or via unix emulator like cygwin/MobaXterm etc on windows), navigate to the 'bin' directory, which is directly under the root.
 
 cd bin
 
@@ -48,6 +52,8 @@ Then execute the shell script :
 /bin/bash launchApp.sh
 
 The script will launch the microservices in background using the jars and then launch the Report Generation application.
+
+**b) Executing pre-compiled jars**
 
 Alternatively, the program can be run directly by executing the JAR from individual 'target' directory,.
 
@@ -61,7 +67,7 @@ java -jar report-executor/target/report-executor-1.0-SNAPSHOT.jar
 
 The csv reports will be generated inside bin directory.
 
-How to build the jar again
+**c) By building the jar again**
 
 After cloning the repository, from root(report-generation directory) go to individual projects directory in the same order (report-executor-commons, key-service,transaction-service,report-executor) and run the below command:
 
